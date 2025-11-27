@@ -1,405 +1,262 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Red Rose Gift</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        // --- Tailwind Configuration (Luxurious Red Velvet & Gold Theme) ---
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'primary-dark-red': '#6D071A', // Deep Burgundy/Velvet Base
-                        'primary-rose': '#B00020', // Bright Rose Red
-                        'secondary-green': '#4CAF50', // Lush Foliage Green
-                        'soft-cream': '#FAF9F6', // Off-White/Parchment for inner text
-                        'accent-gold': '#FFD700', // Gold for highlights
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                    },
-                    keyframes: {
-                        'fade-in': { '0%': { opacity: 0 }, '100%': { opacity: 1 } },
-                        'float': {
-                            '0%, 100%': { transform: 'translateY(0) rotate(0deg) scale(1)', opacity: 0.9 },
-                            '50%': { transform: 'translateY(-50px) rotate(5deg) scale(1.05)', opacity: 0.7 },
-                        },
-                        // Intense glow for the pull handle
-                        'handle-glow': {
-                            '0%, 100%': { 'box-shadow': '0 0 10px #FFD700, 0 0 15px #FFD700' },
-                            '50%': { 'box-shadow': '0 0 25px #FFD700, 0 0 40px #B00020' },
-                        },
-                        // Animation for roses to fall down
-                        'fall-down': {
-                            '0%': { transform: 'translateY(0) rotate(0deg)', opacity: 1 },
-                            '100%': { transform: 'translateY(100vh) rotate(360deg)', opacity: 0 }
-                        }
-                    },
-                    animation: {
-                        'float': 'float 12s ease-in-out infinite alternate', 
-                        'fade-in': 'fade-in 1.5s ease-out forwards',
-                        'handle-glow': 'handle-glow 1.5s ease-in-out infinite',
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        /* Base styles for fixed elements (Background Roses) */
-        .heart {
-            position: fixed; 
-            font-size: 1.5rem;
-            opacity: 0; 
-            filter: drop-shadow(0 0 8px rgba(176, 0, 32, 0.5)); 
-            pointer-events: none;
-            will-change: transform, opacity;
-            z-index: -10; 
-        }
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Flower Letter — Open Me</title>
+<style>
+  :root{
+    --bg1:#fff0f7; --bg2:#ffeef6; --pink:#ff4f85; --deep:#b21f57;
+    --shadow: 0 18px 40px rgba(18,10,20,0.14);
+  }
+  html,body{height:100%;margin:0;font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;}
+  body{
+    background:
+      radial-gradient(1200px 600px at 10% 10%, rgba(255,200,230,0.12), transparent 10%),
+      radial-gradient(1000px 500px at 90% 90%, rgba(255,230,240,0.10), transparent 10%),
+      linear-gradient(180deg,var(--bg1), var(--bg2));
+    display:flex;align-items:center;justify-content:center;padding:28px;overflow:hidden;
+  }
+  /* subtle floral repeat */
+  body::before{
+    content:""; position:fixed; inset:0; pointer-events:none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cg fill='none'%3E%3Ccircle cx='18' cy='18' r='3' fill='%23ffd6e8'/%3E%3Cpath d='M60 10c8 0 8 18 0 18s-8-18 0-18z' fill='%23ffe8f2'/%3E%3Cpath d='M90 60c6 0 6 12 0 12s-6-12 0-12z' fill='%23ffdbe8'/%3E%3C/g%3E%3C/svg%3E");
+    opacity:0.12; background-repeat:repeat; transform:scale(1.6); mix-blend-mode:overlay;
+  }
 
-        /* Container for the main interactive elements - The "Gift Box" Frame */
-        .interactive-stage {
-            position: relative;
-            max-width: 5xl;
-            height: 85vh; 
-            margin: 5vh auto;
-            border-radius: 3rem;
-            overflow: hidden; 
-            /* Luxurious dark border and heavy shadow */
-            border: 10px solid #6D071A; 
-            box-shadow: 0 0 80px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(0, 0, 0, 0.5);
-        }
+  .card{
+    width:min(980px,96vw); max-width:980px; border-radius:22px; padding:26px;
+    box-shadow:var(--shadow); background:linear-gradient(180deg, rgba(255,255,255,0.88), rgba(255,250,252,0.92));
+    display:flex; align-items:center; justify-content:center; position:relative;
+  }
 
-        /* The cover card that gets pulled - Simulating Red Velvet Texture */
-        #cover-card {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            touch-action: none; 
-            z-index: 10;
-            /* Velvet color with a subtle pattern simulation */
-            background-color: #6D071A;
-            background-image: repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.05) 2px, transparent 2px, transparent 4px);
-            /* Embossed effect border */
-            border: 10px solid #B00020; 
-            box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.7);
-        }
+  .envelope-wrap{ width:100%; max-width:760px; display:flex; justify-content:center; align-items:flex-start; perspective:1400px; position:relative; }
 
-        /* The handle (the 'pull me' element) */
-        #pull-handle {
-            cursor: grab;
-            touch-action: none;
-        }
+  .envelope{
+    width:78%; min-width:300px; max-width:680px; height:360px; background:linear-gradient(180deg,#fffdf9,#fff6fb);
+    border-radius:16px; box-shadow:0 10px 30px rgba(0,0,0,0.08); position:relative; overflow:visible;
+    cursor:pointer;
+  }
 
-        /* Responsive video container */
-        .video-container {
-            position: relative;
-            width: 100%;
-            padding-bottom: 56.25%; 
-            height: 0;
-            overflow: hidden;
-            border-radius: 1.5rem; 
-        }
-        .video-container iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
+  .flap{
+    position:absolute; left:0; right:0; height:170px;
+    background: linear-gradient(180deg,#ffdfee,#ffcbe7);
+    border-top-left-radius:16px; border-top-right-radius:16px;
+    transform-origin: top center; transform-style:preserve-3d;
+    transition: transform 900ms cubic-bezier(.2,.9,.2,1), box-shadow 300ms;
+    z-index:8; display:flex; align-items:center; justify-content:center;
+  }
 
-        /* Styling for the falling rose particles */
-        .rose-particle {
-            position: absolute;
-            font-size: 2rem;
-            opacity: 1;
-            pointer-events: none;
-            filter: drop-shadow(0 0 5px rgba(176, 0, 32, 0.8));
-            /* Base fall animation */
-            animation: fall-down linear infinite;
-            will-change: transform, opacity;
-            z-index: 20; /* Ensure roses are on top */
-        }
+  .ribbon{
+    position:absolute; left:50%; transform:translateX(-50%); top:130px;
+    width:220px; height:36px; border-radius:20px;
+    background: linear-gradient(90deg,#ff7aa3,#ff4f85 60%); box-shadow: 0 8px 18px rgba(255,80,120,0.18);
+    display:flex; align-items:center; justify-content:center; color:white; font-weight:700; letter-spacing:0.6px;
+    z-index:9; transition: transform 750ms cubic-bezier(.2,.9,.2,1), opacity 300ms;
+  }
 
-        /* Custom glow for the main title */
-        .title-glow {
-            text-shadow: 0 0 10px #FFD700, 0 0 20px #B00020;
-        }
+  .ribbon .knot{
+    width:38px; height:38px; border-radius:50%;
+    background:linear-gradient(180deg,#ff2b6a,#b20f4a);
+    box-shadow: 0 6px 18px rgba(178,15,74,0.2);
+    position:absolute; left:calc(50% - 19px); top:-8px; transform:rotate(12deg);
+  }
 
-    </style>
+  .letter{
+    position:absolute; left:12px; right:12px; bottom:18px; top:120px;
+    background: linear-gradient(180deg,#fffefc,#fff8fb); border-radius:12px; padding:36px;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.6);
+    transform-origin:center bottom; transition: transform 800ms cubic-bezier(.2,.9,.2,1), opacity 650ms;
+    z-index:4; overflow:auto;
+  }
+
+  .letter h1{ margin:0 0 8px 0; font-size: clamp(18px, 2.2vw, 36px); color:var(--deep); letter-spacing:-0.6px; }
+  .letter p{ margin:0; color:#6b2b4b; line-height:1.6; font-size: clamp(14px,1.6vw,18px); white-space:pre-wrap; }
+
+  /* Open state */
+  .envelope.open .flap{ transform: rotateX(-180deg) translateZ(20px); box-shadow: 0 40px 80px rgba(18,10,20,0.16); }
+  .envelope.open .ribbon{ transform: translateX(-50%) translateY(-46px) scale(0.88) rotate(-8deg); opacity:0.95; }
+  .envelope.open .ribbon .knot{ transform: rotate(-40deg); }
+  .envelope.open .letter{ transform: translateY(-76px) scale(1.02); opacity:1; }
+
+  .click-hint{ font-size:13px;color:#b33b6a;margin-top:14px;text-align:center; user-select:none; }
+
+  /* small footer */
+  .credit{ font-size:12px;color:#7a3f5f; opacity:0.85; text-align:center; margin-top:10px; }
+
+  @media (max-width:700px){
+    .envelope{ height:300px; }
+    .flap{ height:150px; }
+    .ribbon{ top:110px; width:78%; }
+    .card{ padding:18px; border-radius:14px; }
+  }
+</style>
 </head>
-<body class="bg-gradient-to-br from-black via-primary-dark-red to-black font-sans min-h-screen p-4 overflow-y-auto">
+<body>
 
-    <!-- Floating Background Roses (Persistent Animation) -->
-    <div id="hearts-container"></div>
-    
-    <!-- Title outside the main interactive stage -->
-    <h1 class="text-4xl md:text-5xl text-center font-extrabold text-accent-gold title-glow mt-4 mb-8 animate-fade-in" style="animation-delay: 0.5s;">
-        A Small Message for My Pyare Didi
-    </h1>
+<div class="card" id="card">
+  <div class="envelope-wrap">
+    <div class="envelope" id="envelope" aria-hidden="false" title="Click to open">
+      <div class="flap" id="flap" aria-hidden="true">
+        <svg width="220" height="80" viewBox="0 0 220 80" fill="none" xmlns="http://www.w3.org/2000/svg" style="transform:translateY(20px);">
+          <defs><linearGradient id="g" x1="0" x2="1"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#ffd6e8"/></linearGradient></defs>
+          <path d="M10 70 Q110 6 210 70 L210 80 L10 80 Z" fill="url(#g)" opacity="0.95"/>
+          <g transform="translate(84,34) scale(0.9)"><path d="M12 2 c4 -6 14 -6 18 0 c4 6 -2 14 -9 20 c-7 -6 -13 -14 -9 -20z" fill="#ff7aa3" opacity="0.9"/></g>
+        </svg>
+      </div>
 
-    <!-- 🌹 Main Interactive Stage Container - The Gift Box 🌹 -->
-    <div class="interactive-stage bg-soft-cream mx-auto">
+      <div class="ribbon" id="ribbon">
+        <div class="knot"></div>
+        Open with love
+      </div>
 
-        <!-- Message Content (Hidden until revealed) -->
-        <div id="message-container" class="w-full h-full p-8 md:p-12 overflow-y-auto space-y-8 bg-soft-cream/95">
-            
-            <!-- 1. Beautiful Message Section -->
-            <section class="bg-white p-6 md:p-8 rounded-2xl shadow-xl border-t-4 border-accent-gold">
-                <h2 class="text-3xl font-bold text-primary-dark-red mb-4 border-b pb-2 border-primary-rose">Mere pyare Didi</h2>
-                <div class="text-lg leading-relaxed text-gray-800">
-                    <!-- 
-                        ******************************************************************
-                        *** EDIT THIS AREA to put the beautiful message for your sister. ***
-                        ******************************************************************
-                    -->
-                    <p>Suno,</p>
-                    <p class="mt-4">Didi app na bikul bhi prashan na ho sab thik hojayega
-                      pyare didi app toh mere strong didi ho pata didi mere ajj tak pata nhi kitne youtuber dost rahe lekin sach mai ajj tak nhi dekha koi jo itne mehnet kare itne itne der stream kare free fire me, Jab phele bare aya tha na apke channel par tab ma khud shock tha log toh kuch bhi bole kuch bhi banaye inko kya pata mere didi kitne mehnet karte ha pure pure raat stream kare ha yeah log sach mai kutte ha sirf bhokna atta inko</p>
-                    <p class="mt-4">Aur didi yeah ai se video banvane wale inke liye toh na didi man karta ai se hi alag se gali invent karke inko du but choro badh me jaye mereko pata ha mere didi karlege sab kuch bas didi app na jayada overthink na kara karo aur apna dhyan rakha karo aur koi bhi help chaiye ho kuch bhi ho apka bhai(baccha) hamesha apke sath ha bas message ya call kardiya karo mere pyare didi, Didi app na sach mai sabse ache ho didi ho pyare didi ho aur ha ma toh hamesha apke sath hi hu apko prashan karne itne asani se picha nhi chodne wala acha se ache time me bhi apke sath hu bure time me bhi rahunga bas app tension na lo pyare didi pata ha bohot bak bak karta abhi bhi bohot karde ha didi sach batana prashan nhi hote kya merese?.</p>
-                    <p class="mt-6 text-right italic font-semibold text-primary-rose transition duration-300 hover:text-accent-gold hover:translate-x-1 cursor-pointer">
-                        — Apka Baccha🌹
-                    </p>
-                </div>
-            </section>
+      <div class="letter" id="letter">
+        <h1 id="letterTitle">A Special Letter — For My Pyare Didiiiii 🌸</h1>
+        <p id="letterText">Didiiii sunooooo-
+App na sach mai bohot brave ho itna sab kuch akele handle karlete
+sab kuch karlete chaiye woh stream ho vidoes bana ho ghar ko sambhalna ho
+ya phir kuch bhi but ma gussa hu 😤 appse itna kaam karte ho stress toh hoga na
+phir akele itna kuch soch lete ho share bhi nhi karte app roye na bohot bura laga 
+apko pata jab app kuch share karte ho na kabhi nhi socha ajj tak itna bolte ha didi aise karke
+ulta mereko pata mere pyare didi sabse acha kab lagta jab app khud se bolte call karu aur sab batate
+usee acha toh lag hi nhi sakta khud sab share karte mere pyare didi ho pata ha chota hu bohot bolta hu
+but tension toh hoge na apne didi ki itne pyare didi mile ha age se nhi karna aise samjhe pyare Didi
+aur kuch bhi ho koi bhi situation ho apka bhai hamesha hamesha apke sath rahega woh kabhi kabhi ghar
+wale ajate toh woh thoda na hehe adjust karlena didi 🥹 you are best didiiiiiii 🌎🤗
 
-            <!-- 2. Video Activation Section -->
-            <section class="text-center py-6">
-                <!-- Button: The "one more special thing" click to reveal the video -->
-                <button id="reveal-video-btn" class="px-8 py-4 bg-primary-rose text-white font-extrabold rounded-full text-xl shadow-2xl shadow-primary-rose/60 hover:bg-primary-dark-red transform transition-all duration-300 scale-100 hover:scale-[1.05] animate-pulse">
-                    🎁 Click to Reveal Your Special Video Gift! 🎥
-                </button>
-
-                <!-- Video Container (Initially hidden) -->
-                <div id="video-content" class="mt-8 hidden">
-                    <h2 class="text-3xl font-bold text-primary-dark-red mb-4 text-center">A Special Video Just For You</h2>
-                    <div class="video-container shadow-2xl shadow-primary-dark-red/70">
-                        <!-- 
-                            ***********************************************************************
-                            *** REPLACE THE YOUTUBE EMBED URL BELOW with your actual video link.  ***
-                            ***********************************************************************
-                        -->
-                        <iframe
-                            src="1.mp4"
-                            title="Video Placeholder"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                            allowfullscreen
-                            loading="lazy">
-                        </iframe>
-                    </div>
-                </div>
-            </section>
-
-            <footer class="text-center text-gray-500 pt-6 border-t border-gray-200">
-                Mere pyare Didi
-            </footer>
-        </div>
-
-
-        <!-- Cover Card (Draggable Element) - Velvet Texture -->
-        <div id="cover-card" class="flex items-center justify-center text-white text-center rounded-[3rem] transition-all duration-700 ease-out" style="transform: translateY(0);">
-            <div class="p-8">
-                <p class="text-4xl font-light tracking-widest uppercase mb-4 opacity-80 animate-fade-in" style="animation-delay: 1s;">A Secret Awaits...</p>
-                <div class="text-8xl mb-8 filter drop-shadow-lg text-accent-gold">
-                    🌹
-                </div>
-                <!-- Pull Handle (Heavy Gold Fixture) -->
-                <div id="pull-handle" class="mx-auto w-32 h-10 bg-accent-gold rounded-full flex items-center justify-center shadow-2xl animate-handle-glow" style="cursor: grab;">
-                    <p class="text-lg font-extrabold text-primary-dark-red select-none">PULL ME</p>
-                </div>
-            </div>
-        </div>
-        
+Love you didiiiiii 🥹🌎.</p>
+      </div>
     </div>
+  </div>
+  <div class="click-hint" id="clickHint">Click the ribbon or letter to open ✨</div>
+</div>
 
-    <script>
-        // --- Firebase/Environment Setup (Required for runtime) ---
-        // Note: Firebase setup variables are kept for environment compatibility, but not used for this static app logic.
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : null;
-        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+<!-- petals canvas -->
+<canvas id="petalCanvas" style="position:fixed;inset:0;pointer-events:none;z-index:3"></canvas>
 
-        // --- Core Page State and Elements ---
-        const coverCard = document.getElementById('cover-card');
-        const pullHandle = document.getElementById('pull-handle');
-        const stage = document.querySelector('.interactive-stage');
-        const messageContainer = document.getElementById('message-container');
-        const videoBtn = document.getElementById('reveal-video-btn');
-        const videoContent = document.getElementById('video-content');
-        const heartsContainer = document.getElementById('hearts-container');
+<script>
+/* ---------- Elements & basic open/close ---------- */
+const envelope = document.getElementById('envelope');
+const ribbon = document.getElementById('ribbon');
+const letter = document.getElementById('letter');
+const clickHint = document.getElementById('clickHint');
+let isOpen = false;
 
-        let isDragging = false;
-        let startY = 0;
-        let currentY = 0;
-        let messageRevealed = false;
-        const revealThreshold = 100; // Pixels needed to drag to trigger reveal
+function setOpen(open, sound=true){
+  isOpen = open;
+  envelope.classList.toggle('open', open);
+  clickHint.textContent = open ? "Letter opened 🌸" : "Click the ribbon or letter to open ✨";
+  if(open && sound) playChime();
+}
+ribbon.addEventListener('click', e=> { e.stopPropagation(); setOpen(!isOpen); });
+letter.addEventListener('click', e=> { e.stopPropagation(); setOpen(!isOpen); });
+document.getElementById('card').addEventListener('click', ()=> setOpen(!isOpen));
+window.addEventListener('keydown', (e)=>{ if(e.code === 'Space'){ e.preventDefault(); setOpen(!isOpen); } });
 
-        // --- 1. Rose Fall Animation Function (The "Roses Fall" Effect) ---
-        function triggerRoseFall() {
-            const particleCount = 25;
-            const emojis = ['🌹', '🌹', '🍃', '✨']; 
+/* ---------- WebAudio chime ---------- */
+function playChime(){
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const now = ctx.currentTime;
+    const freqs = [880, 1320, 1760];
+    freqs.forEach((f,i)=>{
+      const o = ctx.createOscillator();
+      const g = ctx.createGain();
+      o.type = 'sine';
+      o.frequency.setValueAtTime(f, now + i*0.03);
+      g.gain.setValueAtTime(0, now + i*0.03);
+      g.gain.linearRampToValueAtTime(0.09, now + i*0.03 + 0.01);
+      g.gain.exponentialRampToValueAtTime(0.001, now + i*0.03 + 0.7);
+      o.connect(g); g.connect(ctx.destination);
+      o.start(now + i*0.03);
+      o.stop(now + i*0.03 + 0.9);
+    });
+  } catch(e){ /* ignore if blocked */ }
+}
 
-            // Get boundaries of the message container to position particles
-            const stageRect = stage.getBoundingClientRect();
-            const startXMin = stageRect.left;
-            const startXMax = stageRect.right;
-            const startYPos = stageRect.top; 
+/* ---------- Petals canvas ---------- */
+const canvas = document.getElementById('petalCanvas');
+const ctx = canvas.getContext('2d');
+let w = canvas.width = innerWidth;
+let h = canvas.height = innerHeight;
+window.addEventListener('resize', ()=> { w = canvas.width = innerWidth; h = canvas.height = innerHeight; });
 
-            for (let i = 0; i < particleCount; i++) {
-                const particle = document.createElement('span');
-                particle.className = 'rose-particle';
-                particle.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+let petals = [];
+let petalCount = 80; // fixed density for shareable version
 
-                // Start position across the top width of the stage
-                const x = startXMin + Math.random() * (startXMax - startXMin);
-                
-                particle.style.left = `${x}px`;
-                // Start slightly above the stage boundary
-                particle.style.top = `${startYPos - 50}px`; 
+function rand(min,max){ return Math.random()*(max-min)+min; }
 
-                // Customize speed, duration, and size
-                const duration = 4 + Math.random() * 3; // 4 to 7 seconds fall time
-                const delay = Math.random() * 0.5; // Staggered start delay
-                const size = 1.2 + Math.random() * 1.5;
+class Petal{
+  constructor(){ this.reset(); }
+  reset(){
+    this.x = rand(0,w);
+    this.y = rand(-h,0);
+    this.size = rand(8,26);
+    this.speedY = rand(0.2,1.2);
+    this.speedX = rand(-0.6,0.6);
+    this.rot = rand(0,Math.PI*2);
+    this.rotSpeed = rand(-0.02,0.02);
+    this.color = `hsla(${rand(320,350)},70%,${rand(55,75)}%,${rand(0.7,0.95)})`;
+    this.swing = rand(20,140);
+    this.life = rand(0,Math.PI*2);
+  }
+  update(){
+    this.life += 0.02;
+    this.x += Math.sin(this.life/this.swing)*0.6 + this.speedX;
+    this.y += this.speedY;
+    this.rot += this.rotSpeed;
+    if(this.y > h + 40) this.reset();
+  }
+  draw(){
+    ctx.save();
+    ctx.translate(this.x, this.y);
+    ctx.rotate(this.rot);
+    ctx.beginPath();
+    ctx.moveTo(0, -this.size/2);
+    ctx.quadraticCurveTo(this.size/2, -this.size/2, this.size/2, 0);
+    ctx.quadraticCurveTo(this.size/2, this.size/2, 0, this.size/2);
+    ctx.quadraticCurveTo(-this.size/2, this.size/2, -this.size/2, 0);
+    ctx.quadraticCurveTo(-this.size/2, -this.size/2, 0, -this.size/2);
+    ctx.closePath();
+    ctx.fillStyle = this.color;
+    ctx.fill();
+    ctx.restore();
+  }
+}
 
-                particle.style.fontSize = `${size}rem`; 
-                particle.style.animationDuration = `${duration}s`;
-                particle.style.animationDelay = `${delay}s`;
-                // Add a random rotation to the falling animation
-                particle.style.animation = `fall-down ${duration}s linear ${delay}s infinite`; 
-                
-                document.body.appendChild(particle);
+function initPetals(count){
+  petals = [];
+  for(let i=0;i<count;i++) petals.push(new Petal());
+}
+initPetals(petalCount);
 
-                // Clean up particle after it falls past the viewport
-                setTimeout(() => {
-                    particle.remove();
-                }, (duration * 1000) + (delay * 1000) + 100); 
-            }
-        }
+let petalOn = true;
+function clearCanvas(){ ctx.clearRect(0,0,w,h); }
 
-        // --- 2. Drag/Touch Handlers for Card Pulling ---
-        function getClientY(e) {
-            return e.touches ? e.touches[0].clientY : e.clientY;
-        }
+function frame(){
+  if(petalOn){
+    ctx.clearRect(0,0,w,h);
+    for(let p of petals){ p.update(); p.draw(); }
+  }
+  requestAnimationFrame(frame);
+}
+frame();
 
-        function startDrag(e) {
-            if (messageRevealed) return; 
-            isDragging = true;
-            // Get the current vertical scroll position of the window
-            const scrollY = window.scrollY || window.pageYOffset;
-            // Calculate relative starting position
-            startY = getClientY(e) - currentY + scrollY;
-            
-            coverCard.style.transition = 'none';
-            pullHandle.style.cursor = 'grabbing';
-        }
+/* initial closed state without sound */
+setOpen(false,false);
 
-        function drag(e) {
-            if (!isDragging || messageRevealed) return;
-            e.preventDefault(); 
+/* Optional: allow long-press 3s to reset letter to default (for owner) */
+/* Not exposed in UI; can be removed if undesired */
+let pressTimer = null;
+envelope.addEventListener('pointerdown', ()=> {
+  pressTimer = setTimeout(()=> {
+    // reset letter content to original default (owner shortcut)
+    document.getElementById('letterTitle').textContent = "A Special Letter — For You 🌸";
+    document.getElementById('letterText').textContent = "Hello — \n\nYou are someone who brightens the world just by being in it. \nThis small note carries warmth, a few flowers, and a big smile. \nKeep this little reminder with you on slow days.\n\n— With love.";
+  }, 3000);
+});
+window.addEventListener('pointerup', ()=> { clearTimeout(pressTimer); pressTimer = null; });
 
-            const newClientY = getClientY(e);
-            currentY = newClientY - startY + (window.scrollY || window.pageYOffset);
-
-            if (currentY < 0) currentY = 0; // Prevent pulling up
-
-            coverCard.style.transform = `translateY(${currentY}px)`;
-        }
-
-        function endDrag(e) {
-            if (!isDragging) return;
-            isDragging = false;
-            pullHandle.style.cursor = 'grab';
-            
-            coverCard.style.transition = 'transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)'; // Soft bounce effect
-
-            if (currentY > revealThreshold) {
-                // SUCCESS: Reveal the Message!
-                messageRevealed = true;
-                currentY = stage.offsetHeight; 
-                coverCard.style.transform = `translateY(${currentY}px)`;
-                
-                // Trigger the falling rose animation
-                triggerRoseFall();
-
-                // Hide the cover completely after transition finishes
-                setTimeout(() => {
-                    coverCard.style.display = 'none';
-                }, 500);
-
-            } else {
-                // FAILURE: Snap back to original position
-                currentY = 0;
-                coverCard.style.transform = `translateY(0)`;
-            }
-        }
-
-        // --- 3. Video Reveal Function ---
-        function revealVideo() {
-            if (messageRevealed && videoContent.classList.contains('hidden')) {
-                // Use smooth transitions for a modern reveal
-                videoContent.style.opacity = 0;
-                videoContent.style.transition = 'opacity 1s ease-in-out, transform 1s ease-out';
-                videoContent.style.transform = 'translateY(20px)';
-                videoContent.classList.remove('hidden');
-
-                setTimeout(() => {
-                    videoContent.style.opacity = 1;
-                    videoContent.style.transform = 'translateY(0)';
-                    videoBtn.textContent = 'Enjoy the Video! 💖';
-                    videoBtn.classList.remove('animate-pulse');
-                    videoContent.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }, 10);
-            }
-        }
-
-        // --- 4. Background Animation Setup (Fixed Floating Roses) ---
-        function initializeBackgroundRoses() {
-            const elementCount = 30; 
-            const emojis = ['🌹', '🌹', '🍃', '🌹', '✨', '🌹']; 
-
-            for (let i = 0; i < elementCount; i++) {
-                const element = document.createElement('span');
-                element.className = 'heart';
-                element.textContent = emojis[Math.floor(Math.random() * emojis.length)];
-
-                const x = Math.random() * 100;
-                const y = Math.random() * 100;
-                const delay = Math.random() * 10;
-                const duration = 12 + Math.random() * 8; 
-
-                element.style.left = `${x}vw`;
-                element.style.top = `${y}vh`;
-                element.style.animation = `float ${duration}s ease-in-out ${delay}s infinite alternate`;
-                
-                element.style.opacity = 0.2 + Math.random() * 0.4; // Lighter opacity for depth
-                element.style.fontSize = `${1.2 + Math.random() * 1.5}rem`; 
-
-                heartsContainer.appendChild(element);
-            }
-        }
-
-        // --- Event Listeners and Initialization ---
-        window.onload = function() {
-            initializeBackgroundRoses();
-
-            // Bind mouse events
-            pullHandle.addEventListener('mousedown', startDrag);
-            document.addEventListener('mousemove', drag);
-            document.addEventListener('mouseup', endDrag);
-
-            // Bind touch events
-            pullHandle.addEventListener('touchstart', startDrag);
-            document.addEventListener('touchmove', drag);
-            document.addEventListener('touchend', endDrag);
-
-            // Video button listener
-            videoBtn.addEventListener('click', revealVideo);
-        };
-    </script>
+</script>
 </body>
 </html>
