@@ -247,16 +247,9 @@ setOpen(false,false);
 
 /* Optional: allow long-press 3s to reset letter to default (for owner) */
 /* Not exposed in UI; can be removed if undesired */
-let pressTimer = null;
-envelope.addEventListener('pointerdown', ()=> {
-  pressTimer = setTimeout(()=> {
-    // reset letter content to original default (owner shortcut)
-    document.getElementById('letterTitle').textContent = "A Special Letter — For You 🌸";
-    document.getElementById('letterText').textContent = "Hello — \n\nYou are someone who brightens the world just by being in it. \nThis small note carries warmth, a few flowers, and a big smile. \nKeep this little reminder with you on slow days.\n\n— With love.";
-  }, 3000);
-});
-window.addEventListener('pointerup', ()=> { clearTimeout(pressTimer); pressTimer = null; });
+
 
 </script>
 </body>
 </html>
+
