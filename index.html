@@ -1,255 +1,676 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Flower Letter — Open Me</title>
-<style>
-  :root{
-    --bg1:#fff0f7; --bg2:#ffeef6; --pink:#ff4f85; --deep:#b21f57;
-    --shadow: 0 18px 40px rgba(18,10,20,0.14);
-  }
-  html,body{height:100%;margin:0;font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;}
-  body{
-    background:
-      radial-gradient(1200px 600px at 10% 10%, rgba(255,200,230,0.12), transparent 10%),
-      radial-gradient(1000px 500px at 90% 90%, rgba(255,230,240,0.10), transparent 10%),
-      linear-gradient(180deg,var(--bg1), var(--bg2));
-    display:flex;align-items:center;justify-content:center;padding:28px;overflow:hidden;
-  }
-  /* subtle floral repeat */
-  body::before{
-    content:""; position:fixed; inset:0; pointer-events:none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cg fill='none'%3E%3Ccircle cx='18' cy='18' r='3' fill='%23ffd6e8'/%3E%3Cpath d='M60 10c8 0 8 18 0 18s-8-18 0-18z' fill='%23ffe8f2'/%3E%3Cpath d='M90 60c6 0 6 12 0 12s-6-12 0-12z' fill='%23ffdbe8'/%3E%3C/g%3E%3C/svg%3E");
-    opacity:0.12; background-repeat:repeat; transform:scale(1.6); mix-blend-mode:overlay;
-  }
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Thank You, Pyare didii 💖</title>
 
-  .card{
-    width:min(980px,96vw); max-width:980px; border-radius:22px; padding:26px;
-    box-shadow:var(--shadow); background:linear-gradient(180deg, rgba(255,255,255,0.88), rgba(255,250,252,0.92));
-    display:flex; align-items:center; justify-content:center; position:relative;
-  }
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 
-  .envelope-wrap{ width:100%; max-width:760px; display:flex; justify-content:center; align-items:flex-start; perspective:1400px; position:relative; }
+    <style>
+        :root {
+            --bg: #050816;
+            --bg-soft: #0b1020;
+            --accent: #ff6fb5;
+            --accent-soft: rgba(255, 111, 181, 0.18);
+            --text: #f9fafb;
+            --muted: #9ca3af;
+            --card: #0f172a;
+            --shadow-soft: 0 18px 45px rgba(0,0,0,0.6);
+            --radius-xl: 24px;
+        }
 
-  .envelope{
-    width:78%; min-width:300px; max-width:680px; height:360px; background:linear-gradient(180deg,#fffdf9,#fff6fb);
-    border-radius:16px; box-shadow:0 10px 30px rgba(0,0,0,0.08); position:relative; overflow:visible;
-    cursor:pointer;
-  }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-  .flap{
-    position:absolute; left:0; right:0; height:170px;
-    background: linear-gradient(180deg,#ffdfee,#ffcbe7);
-    border-top-left-radius:16px; border-top-right-radius:16px;
-    transform-origin: top center; transform-style:preserve-3d;
-    transition: transform 900ms cubic-bezier(.2,.9,.2,1), box-shadow 300ms;
-    z-index:8; display:flex; align-items:center; justify-content:center;
-  }
+        html {
+            scroll-behavior: smooth;
+        }
 
-  .ribbon{
-    position:absolute; left:50%; transform:translateX(-50%); top:130px;
-    width:220px; height:36px; border-radius:20px;
-    background: linear-gradient(90deg,#ff7aa3,#ff4f85 60%); box-shadow: 0 8px 18px rgba(255,80,120,0.18);
-    display:flex; align-items:center; justify-content:center; color:white; font-weight:700; letter-spacing:0.6px;
-    z-index:9; transition: transform 750ms cubic-bezier(.2,.9,.2,1), opacity 300ms;
-  }
+        body {
+            font-family: "Poppins", sans-serif;
+            background: radial-gradient(circle at top, #1e293b 0, #020617 50%, #000 100%);
+            color: var(--text);
+            min-height: 100vh;
+        }
 
-  .ribbon .knot{
-    width:38px; height:38px; border-radius:50%;
-    background:linear-gradient(180deg,#ff2b6a,#b20f4a);
-    box-shadow: 0 6px 18px rgba(178,15,74,0.2);
-    position:absolute; left:calc(50% - 19px); top:-8px; transform:rotate(12deg);
-  }
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
 
-  .letter{
-    position:absolute; left:12px; right:12px; bottom:18px; top:120px;
-    background: linear-gradient(180deg,#fffefc,#fff8fb); border-radius:12px; padding:36px;
-    box-shadow: inset 0 1px 0 rgba(255,255,255,0.6);
-    transform-origin:center bottom; transition: transform 800ms cubic-bezier(.2,.9,.2,1), opacity 650ms;
-    z-index:4; overflow:auto;
-  }
+        /* NAVBAR */
 
-  .letter h1{ margin:0 0 8px 0; font-size: clamp(18px, 2.2vw, 36px); color:var(--deep); letter-spacing:-0.6px; }
-  .letter p{ margin:0; color:#6b2b4b; line-height:1.6; font-size: clamp(14px,1.6vw,18px); white-space:pre-wrap; }
+        .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 999;
+            backdrop-filter: blur(18px);
+            background: linear-gradient(to bottom, rgba(15,23,42,0.92), rgba(15,23,42,0.35));
+            border-bottom: 1px solid rgba(148,163,184,0.15);
+        }
 
-  /* Open state */
-  .envelope.open .flap{ transform: rotateX(-180deg) translateZ(20px); box-shadow: 0 40px 80px rgba(18,10,20,0.16); }
-  .envelope.open .ribbon{ transform: translateX(-50%) translateY(-46px) scale(0.88) rotate(-8deg); opacity:0.95; }
-  .envelope.open .ribbon .knot{ transform: rotate(-40deg); }
-  .envelope.open .letter{ transform: translateY(-76px) scale(1.02); opacity:1; }
+        .nav-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 10px 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
 
-  .click-hint{ font-size:13px;color:#b33b6a;margin-top:14px;text-align:center; user-select:none; }
+        .logo {
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
 
-  /* small footer */
-  .credit{ font-size:12px;color:#7a3f5f; opacity:0.85; text-align:center; margin-top:10px; }
+        .logo-heart {
+            font-size: 1.3rem;
+        }
 
-  @media (max-width:700px){
-    .envelope{ height:300px; }
-    .flap{ height:150px; }
-    .ribbon{ top:110px; width:78%; }
-    .card{ padding:18px; border-radius:14px; }
-  }
-</style>
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            font-size: 0.9rem;
+        }
+
+        .nav-links a {
+            padding: 6px 10px;
+            border-radius: 999px;
+            transition: background 0.2s ease, color 0.2s ease, transform 0.15s ease;
+        }
+
+        .nav-links a:hover {
+            background: rgba(148,163,184,0.16);
+            transform: translateY(-1px);
+        }
+
+        /* LAYOUT */
+
+        main {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 24px 18px 40px;
+        }
+
+        section {
+            margin-bottom: 70px;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            margin-bottom: 12px;
+        }
+
+        .section-subtitle {
+            font-size: 0.95rem;
+            color: var(--muted);
+            max-width: 520px;
+        }
+
+        /* HERO */
+
+        .hero {
+            display: grid;
+            grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+            gap: 24px;
+            align-items: center;
+        }
+
+        .hero-text small {
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 0.16em;
+            color: var(--muted);
+        }
+
+        .hero-heading {
+            font-size: clamp(2.1rem, 5vw, 2.7rem);
+            line-height: 1.2;
+            margin: 8px 0 12px;
+        }
+
+        .hero-heading span.highlight {
+            background: linear-gradient(120deg, #f97316, #ec4899, #a855f7);
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        .hero-tagline {
+            font-size: 0.98rem;
+            color: var(--muted);
+            max-width: 460px;
+            margin-bottom: 18px;
+        }
+
+        .hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .btn-primary {
+            padding: 9px 18px;
+            font-size: 0.9rem;
+            border-radius: 999px;
+            border: none;
+            cursor: pointer;
+            background: linear-gradient(135deg, #ec4899, #f97316);
+            color: #fdf2f8;
+            font-weight: 600;
+            box-shadow: 0 12px 30px rgba(236,72,153,0.45);
+            transition: transform 0.12s ease, box-shadow 0.12s ease, filter 0.15s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            filter: brightness(1.05);
+            box-shadow: 0 16px 40px rgba(236,72,153,0.55);
+        }
+
+        .btn-outline {
+            padding: 9px 16px;
+            border-radius: 999px;
+            background: rgba(15,23,42,0.6);
+            border: 1px solid rgba(148,163,184,0.5);
+            color: var(--muted);
+            font-size: 0.86rem;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: background 0.2s ease, border-color 0.2s ease, transform 0.12s ease;
+        }
+
+        .btn-outline:hover {
+            background: rgba(15,23,42,0.95);
+            border-color: #e5e7eb;
+            transform: translateY(-1px);
+        }
+
+        .typewriter {
+            font-size: 0.92rem;
+            color: #e5e7eb;
+            margin-top: 8px;
+            min-height: 1.3em;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+
+        .hero-note {
+            font-size: 0.8rem;
+            color: var(--muted);
+        }
+
+        .hero-media {
+            position: relative;
+            display: flex;
+            justify-content: center;
+        }
+
+        .hero-card {
+            position: relative;
+            width: 100%;
+            max-width: 320px;
+            aspect-ratio: 4 / 5;
+            border-radius: 28px;
+            background: radial-gradient(circle at top left, #f97316 0, #1f2937 35%, #020617 100%);
+            box-shadow: var(--shadow-soft);
+            overflow: hidden;
+            padding: 10px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+        }
+
+        .hero-image {
+            width: 100%;
+            height: 100%;
+            border-radius: 22px;
+            object-fit: cover;
+            border: 1px solid rgba(251, 207, 232, 0.3);
+        }
+
+        .hero-label {
+            position: absolute;
+            left: 18px;
+            top: 16px;
+            padding: 4px 10px;
+            font-size: 0.7rem;
+            border-radius: 999px;
+            background: rgba(15,23,42,0.85);
+            border: 1px solid rgba(248,250,252,0.35);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .hero-label span.dot {
+            display: inline-block;
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #22c55e;
+        }
+
+        .floating-heart {
+            position: absolute;
+            font-size: 1.1rem;
+            color: #fb7185;
+            opacity: 0.8;
+            animation: floatUp 6s ease-in-out infinite;
+        }
+
+        .floating-heart.h1 { left: 8%; bottom: 10%; animation-delay: 0.2s; }
+        .floating-heart.h2 { right: 8%; bottom: 18%; animation-delay: 1.2s; font-size: 1.4rem;}
+        .floating-heart.h3 { right: 16%; top: 20%; animation-delay: 2.4s; font-size: 0.9rem;}
+
+        @keyframes floatUp {
+            0% { transform: translateY(0) translateX(0); opacity: 0; }
+            15% { opacity: 0.9; }
+            50% { transform: translateY(-20px) translateX(6px); opacity: 0.95; }
+            100% { transform: translateY(-40px) translateX(-4px); opacity: 0; }
+        }
+
+        /* GALLERY */
+
+        .gallery-grid {
+            margin-top: 22px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 10px;
+        }
+
+        .gallery-item {
+            position: relative;
+            border-radius: 18px;
+            overflow: hidden;
+            background: #020617;
+            border: 1px solid rgba(148,163,184,0.25);
+            aspect-ratio: 4 / 5;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.25s ease, filter 0.25s ease;
+        }
+
+        .gallery-item::after {
+            content: "💫";
+            position: absolute;
+            right: 8px;
+            bottom: 6px;
+            font-size: 0.9rem;
+            opacity: 0.85;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.04);
+            filter: brightness(1.04);
+        }
+
+        /* MESSAGE CARD */
+
+        .message-card {
+            margin-top: 24px;
+            background: radial-gradient(circle at top, rgba(248,250,252,0.12) 0, #020617 55%, #020617 100%);
+            border-radius: var(--radius-xl);
+            padding: 24px 22px;
+            border: 1px solid rgba(148,163,184,0.35);
+            box-shadow: var(--shadow-soft);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .message-card::before {
+            content: "";
+            position: absolute;
+            inset: -80px;
+            background: radial-gradient(circle at top left, rgba(249,115,22,0.13), transparent 55%),
+                        radial-gradient(circle at bottom right, rgba(236,72,153,0.16), transparent 60%);
+            opacity: 0.7;
+            pointer-events: none;
+        }
+
+        .message-inner {
+            position: relative;
+            z-index: 1;
+        }
+
+        .message-heading {
+            font-size: 1.3rem;
+            margin-bottom: 12px;
+        }
+
+        .message-body {
+            font-size: 0.96rem;
+            line-height: 1.7;
+            color: #e5e7eb;
+            max-width: 60ch;
+        }
+
+        .message-body p + p {
+            margin-top: 10px;
+        }
+
+        .message-sign {
+            margin-top: 18px;
+            font-size: 0.9rem;
+            color: var(--muted);
+        }
+
+        /* VIDEO */
+
+        .video-wrapper {
+            margin-top: 22px;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid rgba(148,163,184,0.35);
+            background: #020617;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .video-wrapper video {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+
+        .video-caption {
+            padding: 10px 14px 12px;
+            font-size: 0.86rem;
+            color: var(--muted);
+            border-top: 1px solid rgba(15,23,42,0.9);
+            background: radial-gradient(circle at top, rgba(15,23,42,0.9), #020617);
+        }
+
+        /* FOOTER */
+
+        footer {
+            border-top: 1px solid rgba(30,64,175,0.5);
+            padding: 14px 18px 22px;
+            text-align: center;
+            font-size: 0.78rem;
+            color: var(--muted);
+            background: radial-gradient(circle at bottom, #020617, #020617);
+        }
+
+        footer span.highlight {
+            color: #f9a8d4;
+        }
+
+        /* REVEAL ANIMATION */
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(18px);
+            transition: opacity 0.65s ease, transform 0.65s ease;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* RESPONSIVE */
+
+        @media (max-width: 860px) {
+            .hero {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .hero-media {
+                order: -1;
+            }
+
+            .hero-card {
+                max-width: 260px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .nav-links {
+                display: none;
+            }
+
+            main {
+                padding-inline: 14px;
+            }
+
+            .message-card {
+                padding: 18px 16px;
+            }
+        }
+    </style>
 </head>
 <body>
 
-<div class="card" id="card">
-  <div class="envelope-wrap">
-    <div class="envelope" id="envelope" aria-hidden="false" title="Click to open">
-      <div class="flap" id="flap" aria-hidden="true">
-        <svg width="220" height="80" viewBox="0 0 220 80" fill="none" xmlns="http://www.w3.org/2000/svg" style="transform:translateY(20px);">
-          <defs><linearGradient id="g" x1="0" x2="1"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#ffd6e8"/></linearGradient></defs>
-          <path d="M10 70 Q110 6 210 70 L210 80 L10 80 Z" fill="url(#g)" opacity="0.95"/>
-          <g transform="translate(84,34) scale(0.9)"><path d="M12 2 c4 -6 14 -6 18 0 c4 6 -2 14 -9 20 c-7 -6 -13 -14 -9 -20z" fill="#ff7aa3" opacity="0.9"/></g>
-        </svg>
-      </div>
+    <!-- NAVBAR -->
+    <header class="navbar">
+        <div class="nav-inner">
+            <div class="logo">
+                <span class="logo-heart">💖</span>
+                <span>For My Pyare didii</span>
+            </div>
 
-      <div class="ribbon" id="ribbon">
-        <div class="knot"></div>
-        Open with love
-      </div>
+            <nav class="nav-links">
+                <a href="#home">Home</a>
+                <a href="#memories">Photos</a>
+                <a href="#message">Message</a>
+                <a href="#video">Video</a>
+            </nav>
+        </div>
+    </header>
 
-      <div class="letter" id="letter">
-        <h1 id="letterTitle">A Special Letter — For My Pyare Didiiiii 🌸</h1>
-        <p id="letterText">Didiiii sunooooo-
-App na sach mai bohot brave ho itna sab kuch akele handle karlete
-sab kuch karlete chaiye woh stream ho vidoes bana ho ghar ko sambhalna ho
-ya phir kuch bhi but ma gussa hu 😤 appse itna kaam karte ho stress toh hoga na
-phir akele itna kuch soch lete ho share bhi nhi karte app roye na bohot bura laga 
-apko pata jab app kuch share karte ho na kabhi nhi socha ajj tak itna bolte ha didi aise karke
-ulta mereko pata mere pyare didi sabse acha kab lagta jab app khud se bolte call karu aur sab batate
-usee acha toh lag hi nhi sakta khud sab share karte mere pyare didi ho pata ha chota hu bohot bolta hu
-but tension toh hoge na apne didi ki itne pyare didi mile ha age se nhi karna aise samjhe pyare Didi
-aur kuch bhi ho koi bhi situation ho apka bhai hamesha hamesha apke sath rahega woh kabhi kabhi ghar
-wale ajate toh woh thoda na hehe adjust karlena didi 🥹 you are best didiiiiiii 🌎🤗
+    <!-- MAIN CONTENT -->
+    <main>
+        <!-- HERO -->
+        <section id="home" class="hero">
+            <div class="hero-text reveal">
+                <small>For my favourite didi</small>
+                <h1 class="hero-heading">
+                    Thank you for being<br>
+                    <span class="highlight">My pyare didi.</span>
+                </h1>
 
-Love you didiiiiii 🥹🌎.</p>
-      </div>
-    </div>
-  </div>
-  <div class="click-hint" id="clickHint">Click the ribbon or letter to open ✨</div>
-</div>
+                <p class="hero-tagline">
+                    This is a small message from your baccha,
+                    for my pyare didi.
+                </p>
 
-<!-- petals canvas -->
-<canvas id="petalCanvas" style="position:fixed;inset:0;pointer-events:none;z-index:3"></canvas>
+                <div class="hero-actions">
+                    <a href="#memories">
+                        <button class="btn-primary">See photos ✨</button>
+                    </a>
+                    <a href="#message">
+                        <button class="btn-outline">
+                            Read my message
+                            <span>💌</span>
+                        </button>
+                    </a>
+                </div>
 
-<script>
-/* ---------- Elements & basic open/close ---------- */
-const envelope = document.getElementById('envelope');
-const ribbon = document.getElementById('ribbon');
-const letter = document.getElementById('letter');
-const clickHint = document.getElementById('clickHint');
-let isOpen = false;
+                <div class="typewriter" id="typewriter"></div>
 
-function setOpen(open, sound=true){
-  isOpen = open;
-  envelope.classList.toggle('open', open);
-  clickHint.textContent = open ? "Letter opened 🌸" : "Click the ribbon or letter to open ✨";
-  if(open && sound) playChime();
-}
-ribbon.addEventListener('click', e=> { e.stopPropagation(); setOpen(!isOpen); });
-letter.addEventListener('click', e=> { e.stopPropagation(); setOpen(!isOpen); });
-document.getElementById('card').addEventListener('click', ()=> setOpen(!isOpen));
-window.addEventListener('keydown', (e)=>{ if(e.code === 'Space'){ e.preventDefault(); setOpen(!isOpen); } });
+                <p class="hero-note">
+                    Tip: Scroll down slowly, I made this page just for you mere pyare didi. 🥺💖
+                </p>
+            </div>
 
-/* ---------- WebAudio chime ---------- */
-function playChime(){
-  try {
-    const ctx = new (window.AudioContext || window.webkitAudioContext)();
-    const now = ctx.currentTime;
-    const freqs = [880, 1320, 1760];
-    freqs.forEach((f,i)=>{
-      const o = ctx.createOscillator();
-      const g = ctx.createGain();
-      o.type = 'sine';
-      o.frequency.setValueAtTime(f, now + i*0.03);
-      g.gain.setValueAtTime(0, now + i*0.03);
-      g.gain.linearRampToValueAtTime(0.09, now + i*0.03 + 0.01);
-      g.gain.exponentialRampToValueAtTime(0.001, now + i*0.03 + 0.7);
-      o.connect(g); g.connect(ctx.destination);
-      o.start(now + i*0.03);
-      o.stop(now + i*0.03 + 0.9);
-    });
-  } catch(e){ /* ignore if blocked */ }
-}
+            <div class="hero-media reveal">
+                <div class="hero-card">
+                    <!-- Replace sister1.jpg with your sister's photo -->
+                    <img src="2.png" alt="My sister" class="hero-image">
 
-/* ---------- Petals canvas ---------- */
-const canvas = document.getElementById('petalCanvas');
-const ctx = canvas.getContext('2d');
-let w = canvas.width = innerWidth;
-let h = canvas.height = innerHeight;
-window.addEventListener('resize', ()=> { w = canvas.width = innerWidth; h = canvas.height = innerHeight; });
+                    <div class="hero-label">
+                        <span class="dot"></span>
+                        <span>My favourite sister</span>
+                    </div>
+                    <span class="floating-heart h1">💗</span>
+                    <span class="floating-heart h2">💓</span>
+                    <span class="floating-heart h3">💘</span>
+                </div>
+            </div>
+        </section>
 
-let petals = [];
-let petalCount = 80; // fixed density for shareable version
+        <!-- MEMORIES SECTION -->
+        <section id="memories">
+            <h2 class="section-title reveal">Mere pyare didi 📸</h2>
+            <p class="section-subtitle reveal">
+                You are best didiiiiiiii 😭🌎.
+            </p>
 
-function rand(min,max){ return Math.random()*(max-min)+min; }
+            <div class="gallery-grid">
+                <!-- Replace the image src paths with your own images -->
+                <div class="gallery-item reveal">
+                    <img src="1.JPG" alt="Memory 1">
+                </div>
+                <div class="gallery-item reveal">
+                    <img src="7.png" alt="Memory 2">
+                </div>
+                <div class="gallery-item reveal">
+                    <img src="3.JPG" alt="Memory 3">
+                </div>
+                <div class="gallery-item reveal">
+                    <img src="3.png" alt="Memory 4">
+                </div>
+                <div class="gallery-item reveal">
+                    <img src="4.JPG" alt="Memory 5">
+                </div>
+                <div class="gallery-item reveal">
+                    <img src="5.png" alt="Memory 6">
+                </div>
+            </div>
+        </section>
 
-class Petal{
-  constructor(){ this.reset(); }
-  reset(){
-    this.x = rand(0,w);
-    this.y = rand(-h,0);
-    this.size = rand(8,26);
-    this.speedY = rand(0.2,1.2);
-    this.speedX = rand(-0.6,0.6);
-    this.rot = rand(0,Math.PI*2);
-    this.rotSpeed = rand(-0.02,0.02);
-    this.color = `hsla(${rand(320,350)},70%,${rand(55,75)}%,${rand(0.7,0.95)})`;
-    this.swing = rand(20,140);
-    this.life = rand(0,Math.PI*2);
-  }
-  update(){
-    this.life += 0.02;
-    this.x += Math.sin(this.life/this.swing)*0.6 + this.speedX;
-    this.y += this.speedY;
-    this.rot += this.rotSpeed;
-    if(this.y > h + 40) this.reset();
-  }
-  draw(){
-    ctx.save();
-    ctx.translate(this.x, this.y);
-    ctx.rotate(this.rot);
-    ctx.beginPath();
-    ctx.moveTo(0, -this.size/2);
-    ctx.quadraticCurveTo(this.size/2, -this.size/2, this.size/2, 0);
-    ctx.quadraticCurveTo(this.size/2, this.size/2, 0, this.size/2);
-    ctx.quadraticCurveTo(-this.size/2, this.size/2, -this.size/2, 0);
-    ctx.quadraticCurveTo(-this.size/2, -this.size/2, 0, -this.size/2);
-    ctx.closePath();
-    ctx.fillStyle = this.color;
-    ctx.fill();
-    ctx.restore();
-  }
-}
+        <!-- MESSAGE SECTION -->
+        <section id="message">
+            <h2 class="section-title reveal">A small message just for my pyare didi 💌</h2>
+            <p class="section-subtitle reveal">
+                Pyare didi mujhe nhi pata ma kaisa bhai hu but app sabse best
+                didi ho 🥹💝.
+            </p>
 
-function initPetals(count){
-  petals = [];
-  for(let i=0;i<count;i++) petals.push(new Petal());
-}
-initPetals(petalCount);
+            <div class="message-card reveal">
+                <div class="message-inner">
+                    <h3 class="message-heading">Mere Pyare Didi 🥹💝,</h3>
 
-let petalOn = true;
-function clearCanvas(){ ctx.clearRect(0,0,w,h); }
+                    <div class="message-body">
+                        <!-- You can edit this message text however you like -->
+                        <p>
+                           Sunoo, ma na purane chats padh raha tha aur sachi didiiiiiiii
+                           itna acha lagta na padhke itne pyare didii kaha se milgye 😭💝
+                        </p>
+                        <p>
+                            Ma pata didii phele sochta tha college shuru se phele itna mujhe time,
+                            nhi milega dc ane ka didi par itne bhai ayege mere jagah toh koi aur le hi
+                            lega easily but didi apne toh sab ulta hi kardiya itne pyar se kon rakhta ha 
+                            didiii 😭🫂 app sach mai sabse acheee ho.Pata didii abhi thode der phele hi 
+                            insta dekh raha tha usme na ek reel aye the usme tha ki woh apke asli behan nhi ha
+                            tab bhi app uske sath itna kyu karte ho ab itne ache didiii mile ha hamesha support
+                            karte hamesha mere side rehte aur specially mere pyare didi merese milne tak aye 😭🌎
+                            toh bhai kya nhi kar sakta mere liye didiiiii app real se bhi upper ho 🤗💗.
+                        </p>
+                        <p>
+                            Didi sach mai itna itnaaaa itnaaaaa acha laga tha na jab app milne aye bata nhi sakta
+                            😭😭 didii itne pyar se bulate hamesha mujhe baccha baccha bolkar aur ma gadha dekho
+                            pata nhi kya kya soch leta thank you soo much na didiii itna sab karne ke liye 😭💌
+                            lagta ha jaise hi sach mai bachpan se hi sath ho didii, mere pyare didiii koi rahe ya 
+                            na rahe apke side apka bhai hamesha apke side rahega promise 🥹🫂. bas didiii app kabhi
+                            prashan na hona kuch bhi ho hamesha bata dena kabhi tension matt lena apke ache bure time
+                            dono me apke sath ha didiiii.
+                        </p>
+                        <p>
+                           Chota sa dimag khau message apke liye pyare didi 💌🥹
+                            <strong>thank you for being my Pyare didi.</strong>
+                            I’m really, really lucky to have you. 💖
+                        </p>
+                    </div>
 
-function frame(){
-  if(petalOn){
-    ctx.clearRect(0,0,w,h);
-    for(let p of petals){ p.update(); p.draw(); }
-  }
-  requestAnimationFrame(frame);
-}
-frame();
+                    <div class="message-sign">
+                        Love uh didiiiiiiiiiiiiiiii<br>
+                        <strong>From Apka baccha</strong> 🫶
+                    </div>
+                </div>
+            </div>
+        </section>
 
-/* initial closed state without sound */
-setOpen(false,false);
+        <!-- VIDEO SECTION -->
+        <section id="video">
+            <h2 class="section-title reveal">A little video for you 🎥</h2>
+            <p class="section-subtitle reveal">
+                Didiiiii yeah sach mai best time tha kabhi nhi bhulunga yeah 
+                2 din sabse best theeeeeeeeee. 😌
+            </p>
 
-/* Optional: allow long-press 3s to reset letter to default (for owner) */
-/* Not exposed in UI; can be removed if undesired */
+            <div class="video-wrapper reveal">
+                <!-- Replace sister-video.mp4 with your video file -->
+                <video controls poster="video-thumbnail.jpg">
+                    <source src="0928.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <div class="video-caption">
+                    Miss you didiiii. 💕
+                </div>
+            </div>
+        </section>
+    </main>
 
+    <!-- FOOTER -->
+    <footer>
+        Made with <span class="highlight">love, drama &amp; gratitude</span> for my pyare didiiii. 💖
+    </footer>
 
-</script>
+    <!-- JAVASCRIPT: typewriter + reveal-on-scroll -->
+    <script>
+        // Typewriter effect for the small line in hero
+        document.addEventListener("DOMContentLoaded", function () {
+            const el = document.getElementById("typewriter");
+            const text = "Thank you for being my sister, today and always. 💕";
+            let i = 0;
+
+            function type() {
+                if (!el) return;
+                if (i <= text.length) {
+                    el.textContent = text.slice(0, i);
+                    i++;
+                    setTimeout(type, 60);
+                }
+            }
+            type();
+        });
+
+        // Reveal on scroll
+        const reveals = document.querySelectorAll(".reveal");
+
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add("visible");
+                        observer.unobserve(entry.target);
+                    }
+                });
+            },
+            {
+                threshold: 0.18,
+            }
+        );
+
+        reveals.forEach((el) => observer.observe(el));
+    </script>
 </body>
 </html>
-
